@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Загруженные фотографии</h1>
+    <br>
+    <input type="text" id="myInput" placeholder="Поиск...">
+    <div class="table-responsive">
+        <table name="myTable" id="myTable" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Превью</th>
+                    <th>Название</th>
+                    <th>Производитель и модель камеры</th>
+                    <th>Размер файла</th>
+                    <th>Дата создания фото</th>
+                    <th>Дата загрузки фото</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody id="myTableArticles">
+                {% for article in articles %}
+                <tr>
+                    <td>
+                      <a href="photos/{{article.file}}">
+                        <img src="photos_thumbnails/{{article.file}}" alt="Превью">
+                      </a>
+                    </td>
+                    <td>{{article.name}}</td>
+                    <td>{{article.camera_model}}</td>
+                    <td>{{article.size}} байт</td>
+                    <td>{{article.date_creation}}</td>
+                    <td>{{article.date_upload}}</td>
+                    <td>
+                      <form action="{{url_for('delete_photo', photo_id=article.id)}}">
+                        <input type="submit" value="Удалить" class="btn btn-danger" />
+                      </form>
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTableArticles tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+
+{% endblock %}

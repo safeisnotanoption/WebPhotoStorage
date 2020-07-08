@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Добавить фотографию</h1>
+    {% from 'includes/_formhelpers.html' import render_field %}
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form">
+
+        <!--form method=post-->
+        <dl>
+          {{ form.csrf_token }}
+          {% if form.csrf_token.errors %}
+          <ul class=errors>
+            <li>Текущая сессия устарела. Пожалуйста, перезагрузите страницу и отправьте фотографию снова.</li>
+          </ul>
+          {% endif %}
+          <div class="form-group">
+            {{ form.file.label }} <br>
+            {{ form.file }} <br>
+            {% if form.file.errors %}
+            <ul class=errors>
+              {% for error in form.file.errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            {{ form.name.label }} <br>
+            {{ form.name }} <br>
+            {% if form.name.errors %}
+              <ul class=errors>
+              {% for error in form.name.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </dl>
+        <div class="form-group">
+          <input id="submit_button" type="submit" value="Отправить фотографию" class="btn btn-dark" >
+        </div>
+        <!--/form-->
+    </form>
+
+{% endblock %}
